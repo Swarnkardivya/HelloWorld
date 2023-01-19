@@ -1,20 +1,15 @@
 pipeline {
     agent any
+	
+	tools {
+		maven "MAVEN"
+	}
 
     stages {
-        stage('Build') {
+        stage('Build Maven') {
             steps {
-                echo 'Building..'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
+                checkout ([$class : GitSCM, branches : [[name '*master']], extension : [], userRemoteConfig :[[credentialsId : 'master', url 'git 'https://github.com/Swarnkardivya/HelloWorld.git']]
+			sh "mvn -Dmaven.test.failure.ignore=true clean package"
             }
         }
     }
